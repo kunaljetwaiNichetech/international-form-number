@@ -13,44 +13,92 @@ export default function Formval2({ InputField }) {
   const handelchange = (e) => {
     const { name, value } = e.target;
     const vaalues = e.target.value;
+
     if (name === "name") {
-      const reg = /^[a-zA-Z]+$/;
+      const reg = /^[a-zA-Z]*$/;
+      // if (vaalues.match(reg)) {
       if (vaalues.match(reg)) {
         setkunal({ ...kunal, [name]: value });
+        seterror({
+          name: "",
+        });
+      } else {
+        seterror({
+          name: "only charter are allowed",
+        });
       }
     }
     if (name === "lastname") {
-      const regs = /^[0-9]+$/;
+      const regs = /^[0-9]*$/;
       if (vaalues.match(regs)) {
         setkunal({ ...kunal, [name]: value });
+        seterror({ mobile: "" });
+      } else {
+        seterror({
+          mobile: "only charter are allowed",
+        });
+      }
+    }
+    if (name === "email") {
+      setkunal({ ...kunal, [name]: value.trim() });
+      const r = /^[^\s@]+@([\w-]+\.)+[\w-]{2,3}$/;
+      // const r = /^[a-zA-Z]*$/;
+      if (!vaalues.match(r)) {
+        console.log("hiii this is");
+        seterror({ email: "email.is not valid" });
+      } else {
+        Setemail(e.target.value);
+        seterror("");
       }
     }
     // debugger;
+    // if (name === "email") {
+    //   const { name, value } = e.target;
+    //   setkunal({ ...kunal, [name]: value });
+    //   const input = e.target.value;
+
+    //   const r = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/;
+    //   if (r.test(input)) {
+    //     // debugger;
+    //     seterror({ email: "valid" });
+    //     setkunal({ ...kunal, [name]: input });
+    //   } else {
+    //     seterror({ email: "please cheak email" });
+    //   }
+    //   console.log("this is input", input);
+    // }
   };
+  console.log("email is this", email);
   const handelsubmit = (e) => {
     e.preventDefault();
     const reg = /^[a-zA-Z]+$/;
+    const regs = /^[0-9]*$/;
     const validation = {};
 
     if (kunal.name.length === 0) {
       validation.name = "name is required";
     }
-    if (!reg.test(kunal.name)) {
-      validation.name = "please enter only char";
-    }
+    // if (!reg.test(kunal.name)) {
+    //   validation.name = "please enter only char";
+    // }
     if (kunal.lastname.length === 0) {
       validation.mobile = "mobile number is required";
     }
     // if (!reg.test(kunal.lastname)) {
-    //   validation.mobile = "please enter only char";
+    //   validation.mobile = "please enter only number";
     // }
-    if (kunal.email.length === 0) {
-      validation.error = "email is required";
+    console.log("email", email);
+    if (email.length === 0) {
+      validation.namee = "email is required";
     }
 
     seterror(validation);
 
-    // if (validation.name == "" && validation.mobile == "") {
+    // if (
+    //   validation.name == "" &&
+    //   validation.mobile == "" &&
+    //   validation.email == ""
+    // ) {
     //   alert("done");
     // } else {
     //   alert("notnot");
@@ -58,42 +106,35 @@ export default function Formval2({ InputField }) {
     if (Object.keys(validation).length === 0) {
       alert("the form submited");
     }
-    console.log("this is reges", reg.test(kunal.name));
-    console.log("errors", error);
+    // console.log("this is reges", reg.test(kunal.name));
+    // console.log("errors", error);
   };
-  /// for second input
-  // function onKeyUp2(e) {
-  //   console.log(e.target.value);
-  //   const reg = /^[a-zA-Z]+$/;
 
-  //   if (!reg.test(e.target.value)) {
-  //     seterror({ mobile: "only char are allowed" });
-  //   } else {
-  //     seterror({ mobile: "" });
-  //   }
-  // }
-  function onKeyUp(e) {
-    const reg = /^[a-zA-Z]+$/;
-    if (!reg.test(e.target.value)) {
-      seterror({ name: "only char are allowed" });
-    } else {
-      seterror({ name: "" });
-    }
-  }
-  const validemail = (input) => {
-    const r = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/;
-    return r.test(input);
-  };
+  // const validemail = (input) => {
+  //   return /^[a-zA-z]*$/.test(input);
+  // };
+
   /// trying email differently herer....
-  const handelchangeemail = (e) => {
-    const inputval = e.target.value;
-    Setemail(inputval);
-    const valuu = validemail(inputval);
-    Setemail(valuu);
-  };
+  // const handelchangeemail = (e) => {
+  //   const r = /^[a-zA-z]*$/;
+
+  // Setemail(e.target.value);
+  // console.log("email", e.target.value);
+  // let p = r.test(e.target.value);
+  // console.log(p);
+  // if (!p) {
+  //   seterror({ email: "email.is not valid" });
+  // } else {
+  //   Setemail(e.target.value);
+  //   seterror("");
+  // }
+
+  //   const valuu = validemail(e.target.value);
+  //   setkunal(validemail(valuu));
+  // };
 
   console.log(kunal);
-  console.log(email);
+
   return (
     <div>
       <form onSubmit={handelsubmit}>
@@ -101,7 +142,7 @@ export default function Formval2({ InputField }) {
           <label>name</label>
           <InputField
             type="text"
-            onKeyUp={onKeyUp}
+            // onKeyUp={onKeyUp}
             onChange={handelchange}
             value={kunal.name}
             name={"name"}
@@ -113,6 +154,7 @@ export default function Formval2({ InputField }) {
           <InputField
             type="text"
             onChange={handelchange}
+            // onKeyUp2={onKeyUp2}
             value={kunal.lastname}
             name={"lastname"}
           />
@@ -122,8 +164,8 @@ export default function Formval2({ InputField }) {
           <label>email</label>
           <InputField
             type="text"
-            onChange={handelchangeemail}
-            value={email}
+            onChange={handelchange}
+            value={kunal.email}
             name={"email"}
           />
         </div>

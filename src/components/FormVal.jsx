@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 const InputField = ({ onInput, onKeyUp, name, type, value, onChange }) => {
   return (
     <div>

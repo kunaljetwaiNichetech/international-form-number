@@ -1,8 +1,8 @@
 import { useState } from "react";
 import React from "react";
-import Display from "./Display";
-
-export default function Formval2({ InputField }) {
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+export default function Formval2({ InputField, det }) {
   const [kunal, setkunal] = useState({
     name: "",
     lastname: "",
@@ -10,6 +10,7 @@ export default function Formval2({ InputField }) {
   });
   const [email, Setemail] = useState("");
   const [error, seterror] = useState({});
+  const history = useNavigate();
   const handelchange = (e) => {
     const { name, value } = e.target;
     const vaalues = e.target.value;
@@ -93,19 +94,28 @@ export default function Formval2({ InputField }) {
     }
 
     seterror(validation);
+    console.log("", validation.error);
 
     // if (
-    //   validation.name == "" &&
-    //   validation.mobile == "" &&
-    //   validation.email == ""
+    //   validation.name === "" &&
+    //   validation.mobile === "" &&
+    //   error.email === ""
     // ) {
     //   alert("done");
     // } else {
+    //   debugger;
     //   alert("notnot");
     // }
     if (Object.keys(validation).length === 0) {
-      alert("the form submited");
+      console.log(error.email === undefined);
+      if (error.email === undefined) {
+        alert("the form submited");
+        det(kunal);
+        history("/details", { state: kunal });
+      }
+      // debugger;
     }
+
     // console.log("this is reges", reg.test(kunal.name));
     // console.log("errors", error);
   };

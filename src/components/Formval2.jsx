@@ -2,7 +2,24 @@ import { useState } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { InputMask } from "primereact/inputmask";
 export default function Formval2({ InputField, det }) {
+  const [val2, setval2] = useState();
+  //this is for number format
+  let n = 123456789;
+  const f = new Intl.NumberFormat(n, {
+    initialCountry: "us",
+    separateDialCode: true,
+    utilsScript:
+      "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+  });
+  console.log("this is format of phone number", f.format(n));
+
+  ///////////////end format number
+  /////////////////
+  function vallliidate(e) {}
+  //////////////////
+
   const [kunal, setkunal] = useState({
     name: "",
     lastname: "",
@@ -12,8 +29,8 @@ export default function Formval2({ InputField, det }) {
   const [error, seterror] = useState({});
   const history = useNavigate();
   const handelchange = (e) => {
-    const { name, value } = e.target;
-    const vaalues = e.target.value;
+    let { name, value } = e.target;
+    let vaalues = e.target.value;
 
     if (name === "name") {
       const reg = /^[a-zA-Z]*$/;
@@ -29,17 +46,79 @@ export default function Formval2({ InputField, det }) {
         });
       }
     }
+    // if (name === "lastname") {
+    //   const regs = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
+    //   const nminput = e.target.value.replace(/\D/g, "");
+    // nminput.match(regs);
+    // let formatedNumber = "+1";
+    // // if (nminput.length >= 2) {
+    // //   formatedNumber += nminput[0];
+    // // }
+    // if (nminput.length >= 4) {
+    //   formatedNumber += `(${nminput.substring(0, 3)}`;
+    // }
+    // if (nminput.length >= 7) {
+    //   formatedNumber += `)${nminput.substring(3, 6)}`;
+    // }
+    // if (nminput.length >= 10) {
+    //   formatedNumber += `-${nminput.substring(6, 10)}`;
+    // }
+    // let damo = Number(formatedNumber);
+    // console.log(damo);
+
+    // setkunal({ ...kunal, [name]: value });
+
+    // if (vaalues.match(regs)) {
+    // const newArray = vaalues.match(regs);
+    // seterror({ mobile: "" });
+    // let intlCountryCode = newArray[1] ? "+91" : "+1";
+
+    // Resolving the above array we get
+    // the international number
+    //   let internationalNumber =
+    //     intlCountryCode +
+    //     " (" +
+    //     newArray[2] +
+    //     ") " +
+    //     newArray[3] +
+    //     "-" +
+    //     newArray[4];
+    //   setkunal({ ...kunal, [name]: internationalNumber });
+    // } else {
+    //   seterror({
+    //     mobile: "only number  are allowed",
+    //   });
+    // }
+    /////////////////////////////////////////
+    // }
+
+    ///////////////////////back same////////////////
     if (name === "lastname") {
-      const regs = /^[0-9]*$/;
-      if (vaalues.match(regs)) {
-        setkunal({ ...kunal, [name]: value });
-        seterror({ mobile: "" });
-      } else {
-        seterror({
-          mobile: "only charter are allowed",
-        });
+      // const regs = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
+      // if (vaalues.match(regs)) {
+      let p = e.target.value;
+      let newnumber = "";
+      let cleaned = ("" + p).replace(/\D/g, "");
+      for (let i = 0; i < cleaned.length; i++) {
+        if (i == 0) {
+          newnumber = "+1 (";
+        } else if (i == 3) {
+          newnumber = newnumber + ") ";
+        } else if (i == 6) {
+          newnumber = newnumber + "-";
+        }
+
+        newnumber = newnumber + cleaned[i];
       }
+      console.log(newnumber);
+      setkunal({ ...kunal, [name]: newnumber });
+      seterror({ mobile: "" });
+    } else {
+      seterror({
+        mobile: "only charter are allowed",
+      });
     }
+    // }
     if (name === "email") {
       setkunal({ ...kunal, [name]: value.trim() });
       const r = /^[^\s@]+@([\w-]+\.)+[\w-]{2,3}$/;
@@ -167,7 +246,14 @@ export default function Formval2({ InputField, det }) {
             // onKeyUp2={onKeyUp2}
             value={kunal.lastname}
             name={"lastname"}
+            maxLength={16}
           />
+          {/* <input
+            type="text"
+            onKeyUp={keyyyyyy}
+            value={val2}
+            onChange={validationNumber}
+          /> */}
         </div>
         {error && <span style={{ color: "red" }}>{error.mobile}</span>}
         <div>

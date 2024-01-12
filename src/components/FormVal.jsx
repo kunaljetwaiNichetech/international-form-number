@@ -1,4 +1,12 @@
-const InputField = ({ onInput, onKeyUp, name, type, value, onChange }) => {
+const InputField = ({
+  maxLength,
+  onInput,
+  onKeyUp,
+  name,
+  type,
+  value,
+  onChange,
+}) => {
   return (
     <div>
       <input
@@ -8,6 +16,7 @@ const InputField = ({ onInput, onKeyUp, name, type, value, onChange }) => {
         value={value}
         onChange={onChange}
         onInput={onInput}
+        maxLength={maxLength}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { InputField } from './components/FormVal';
 import Formval2 from './components/Formval2';
 import {BrowserRouter as Router,Route,Routes, Link} from 'react-router-dom'
@@ -9,6 +9,23 @@ import Tryingusecontext from './components/Tryingusecontext';
 import Chcking from './components/chcking';
 
 function App() {
+ 
+  
+//    
+// fetch("https://jsonplaceholder.typicode.com/posts",{
+//   method:"POST",
+//   headers:{
+//     'Accept':'application/json',
+//     "Content-Type":'application/json'
+//   },
+//      body:JSON.stringify({
+      
+//     body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
+   
+//   })
+
+// }).then(res=>res.json()).then(res=>console.log(res))
+
   // const [Formdata, setFormdata] = useState({
   //     firstname: "",
   //     // middelename: "",

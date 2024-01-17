@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { InputMask } from "primereact/inputmask";
 export default function Formval2({ InputField, det }) {
-  const [val2, setval2] = useState();
+  const [Number, setNumber] = useState();
   //this is for number format
   let n = 123456789;
   const f = new Intl.NumberFormat(n, {
@@ -16,8 +16,31 @@ export default function Formval2({ InputField, det }) {
   console.log("this is format of phone number", f.format(n));
 
   ///////////////end format number
-  /////////////////
-  function vallliidate(e) {}
+  const [oldValue, setOldvalue] = useState("");
+
+  function PhoneFormating(newValue) {
+    if (oldValue.length > newValue.length) {
+      setOldvalue(newValue);
+      return newValue;
+    }
+
+    var newText = newValue;
+    if (newText.length == 1) {
+      newText = "(" + newText;
+    }
+    if (oldValue.length == 6) {
+      newText = oldValue + ") " + newText[newText.length - 1];
+    }
+    if (oldValue.length == 11) {
+      newText = oldValue + "-" + newText[newText.length - 1];
+    }
+    console.log("this ", newText);
+    setOldvalue(newText);
+    return newText;
+  }
+
+  /////
+
   //////////////////
 
   const [kunal, setkunal] = useState({
@@ -46,79 +69,33 @@ export default function Formval2({ InputField, det }) {
         });
       }
     }
-    // if (name === "lastname") {
-    //   const regs = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
-    //   const nminput = e.target.value.replace(/\D/g, "");
-    // nminput.match(regs);
-    // let formatedNumber = "+1";
-    // // if (nminput.length >= 2) {
-    // //   formatedNumber += nminput[0];
-    // // }
-    // if (nminput.length >= 4) {
-    //   formatedNumber += `(${nminput.substring(0, 3)}`;
-    // }
-    // if (nminput.length >= 7) {
-    //   formatedNumber += `)${nminput.substring(3, 6)}`;
-    // }
-    // if (nminput.length >= 10) {
-    //   formatedNumber += `-${nminput.substring(6, 10)}`;
-    // }
-    // let damo = Number(formatedNumber);
-    // console.log(damo);
-
-    // setkunal({ ...kunal, [name]: value });
-
-    // if (vaalues.match(regs)) {
-    // const newArray = vaalues.match(regs);
-    // seterror({ mobile: "" });
-    // let intlCountryCode = newArray[1] ? "+91" : "+1";
-
-    // Resolving the above array we get
-    // the international number
-    //   let internationalNumber =
-    //     intlCountryCode +
-    //     " (" +
-    //     newArray[2] +
-    //     ") " +
-    //     newArray[3] +
-    //     "-" +
-    //     newArray[4];
-    //   setkunal({ ...kunal, [name]: internationalNumber });
-    // } else {
-    //   seterror({
-    //     mobile: "only number  are allowed",
-    //   });
-    // }
-    /////////////////////////////////////////
-    // }
-
-    ///////////////////////back same////////////////
+    setkunal({
+      ...kunal,
+      [name]: "+1" + PhoneFormating(e.target.value).replace("+1", ""),
+    });
+    seterror({ mobile: "" });
     if (name === "lastname") {
-      // const regs = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
-      // if (vaalues.match(regs)) {
-      let p = e.target.value;
-      let newnumber = "";
-      let cleaned = ("" + p).replace(/\D/g, "");
-      for (let i = 0; i < cleaned.length; i++) {
-        if (i == 0) {
-          newnumber = "+1 (";
-        } else if (i == 3) {
-          newnumber = newnumber + ") ";
-        } else if (i == 6) {
-          newnumber = newnumber + "-";
-        }
-
-        newnumber = newnumber + cleaned[i];
+      if (kunal.lastname.length == 2 && kunal.lastname.includes("+1")) {
+        setkunal({
+          ...kunal,
+          [name]: "",
+        });
       }
-      console.log(newnumber);
-      setkunal({ ...kunal, [name]: newnumber });
-      seterror({ mobile: "" });
+      // const numericValue = e.target.value.replace(/\D/g, "");
+
+      // Format the phone number as +1 (XXX) XXX-XXXX
+      // const formattedPhoneNumber = `+1 (${numericValue.slice(
+      // 0,
+      // 3
+      // )}) ${numericValue.slice(3, 6)}-${numericValue.slice(6, 10)}`;
+      // setkunal({ ...kunal, [name]: formattedPhoneNumber });
+      // console.log("formattedPhoneNumber", formattedPhoneNumber);
     } else {
       seterror({
         mobile: "only charter are allowed",
       });
     }
-    // }
+
     if (name === "email") {
       setkunal({ ...kunal, [name]: value.trim() });
       const r = /^[^\s@]+@([\w-]+\.)+[\w-]{2,3}$/;
@@ -222,6 +199,7 @@ export default function Formval2({ InputField, det }) {
   //   setkunal(validemail(valuu));
   // };
 
+  console.log("this is numnber console", Number);
   console.log(kunal);
 
   return (
@@ -250,9 +228,10 @@ export default function Formval2({ InputField, det }) {
           />
           {/* <input
             type="text"
-            onKeyUp={keyyyyyy}
-            value={val2}
-            onChange={validationNumber}
+            // onKeyUp={testing}
+            value={Number}
+            onChange={(e) => testing(e.target.value)}
+            maxLength={14}
           /> */}
         </div>
         {error && <span style={{ color: "red" }}>{error.mobile}</span>}

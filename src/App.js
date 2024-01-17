@@ -7,6 +7,10 @@ import Display from './components/Display';
 import { Context } from './components/COOntext';
 import Tryingusecontext from './components/Tryingusecontext';
 import Chcking from './components/chcking';
+import International from './components/International';
+import Example from './components/International';
+import PhoneNumberInput from './components/Mailied';
+import Listing from './components/Listing';
 
 function App() {
  
@@ -93,6 +97,9 @@ function det (pop)
     </Router>
         {/* <Formval2 InputField={InputField} /> */}
         {/* <Chcking/> */}
+        <PhoneNumberInput/>
+        {/* <Example/>   */}
+        {/* <Listing/> */}
     </div>
   );
 }
